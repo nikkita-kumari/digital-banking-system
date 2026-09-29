@@ -10,14 +10,12 @@ export const login = async (
   try {
     const data = loginUserSchema.parse(req.body);
 
-    const user = await loginUser(
+    const result = await loginUser(
       data.email,
       data.password
     );
 
-    res.status(200).json({
-      user
-    });
+    res.status(200).json(result);
   } catch (error) {
     next(error);
   }

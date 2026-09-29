@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import { findUserByEmail } from "../repositories/user.repository.js";
+import { generateAccessToken } from "../utils/jwt.js";
 
 export const loginUser = async (
   email: string,
@@ -20,11 +21,19 @@ export const loginUser = async (
     throw new Error("INVALID_CREDENTIALS");
   }
 
+  const accessToken = generateAccessToken(
+    user.id.toString(),
+    user.role
+  );
+
   return {
-    id: user.id,
-    name: user.name,
-    email: user.email,
-    role: user.role,
-    status: user.status
+    user:{
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        status: user.status
+    },
+    accessToken
   };
 };
