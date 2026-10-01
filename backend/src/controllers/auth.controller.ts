@@ -20,3 +20,12 @@ export const login = async (
     next(error);
   }
 };
+
+export const getCurrentUser = (
+  req: Request,
+  res: Response
+) => {
+  res.status(200).json({
+    user: req.user
+  });
+};
