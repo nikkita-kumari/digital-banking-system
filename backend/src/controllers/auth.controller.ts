@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
-import { loginUser } from "../services/auth.service.js";
+import { loginUser, getCurrentUser as getCurrentUserService } from "../services/auth.service.js";
 import { loginUserSchema } from "../validations/auth.validation.js";
 
 export const login = async (
@@ -21,11 +21,18 @@ export const login = async (
   }
 };
 
-export const getCurrentUser = (
+export const getCurrentUser = async (
   req: Request,
-  res: Response
+  res: Response,
+  next: NextFunction
 ) => {
-  res.status(200).json({
-    user: req.user
-  });
+  try {
+    const user = await getCurrentUserService(req.user!.id);
+
+    res.status(200).json({
+      user
+    });
+  } catch (error) {
+    next(error);
+  }
 };
