@@ -25,6 +25,27 @@ export const errorHandler = (
     }
 
 
+    if (err instanceof Error && err.message === "ACCOUNT_NOT_FOUND") {
+        res.status(404).json({
+            error: {
+            code: "ACCOUNT_NOT_FOUND",
+            message: "Account not found"
+            }
+        });
+        return;
+    }
+
+    if (err instanceof Error && err.message === "INVALID_ACCOUNT_ID") {
+        res.status(400).json({
+            error: {
+            code: "INVALID_ACCOUNT_ID",
+            message: "Invalid account ID"
+            }
+        });
+    return;
+    }
+
+
     if(
         typeof err==="object" &&
         err!==null &&
@@ -37,6 +58,16 @@ export const errorHandler = (
                 message: "A user with this email already exists"
             }
         })
+        return;
+    }
+
+    if (err instanceof Error && err.message === "INSUFFICIENT_FUNDS") {
+        res.status(400).json({
+            error: {
+                code: "INSUFFICIENT_FUNDS",
+                message: "Insufficient account balance"
+            }
+        });
         return;
     }
     
