@@ -70,6 +70,27 @@ export const errorHandler = (
         });
         return;
     }
+
+
+    if (err instanceof Error && err.message === "SAME_ACCOUNT_TRANSFER") {
+        res.status(400).json({
+            error: {
+                code: "SAME_ACCOUNT_TRANSFER",
+                message: "Source and destination accounts must be different"
+            }
+        });
+    return;
+    }
+
+    if (err instanceof Error && err.message === "CURRENCY_MISMATCH") {
+        res.status(400).json({
+            error: {
+                code: "CURRENCY_MISMATCH",
+                message: "Source and destination accounts must use the same currency"
+            }
+        });
+        return;
+    }
     
     res.status(500).json({
         code: "INTERNAL_SERVER_ERROR",

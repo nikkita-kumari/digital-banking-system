@@ -168,3 +168,27 @@ export const decreaseAccountBalance = async (
 
   return result.rows[0];
 };
+
+export const findAccountByIdForUpdate = async (
+  client: PoolClient,
+  accountId: string
+) => {
+  const result = await client.query(
+    `
+    SELECT
+      id,
+      user_id,
+      account_number,
+      account_type,
+      currency,
+      balance,
+      status
+    FROM accounts
+    WHERE id = $1
+    FOR UPDATE;
+    `,
+    [accountId]
+  );
+
+  return result.rows[0];
+};
